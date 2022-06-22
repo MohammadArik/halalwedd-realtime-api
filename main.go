@@ -14,7 +14,7 @@ func main() {
 	// //* Log initial data
 	log.Println("Server Initialization Started")
 	log.Println("Server PID:", os.Getpid())
-	//* Load AES keys and initiate AES Block
+	//* Load AES keys and initiate AES class
 	keyFileData, err := os.ReadFile("./keys/key.dat")
 	panicOnErr(err)
 	key, err := hex.DecodeString(string(keyFileData))
