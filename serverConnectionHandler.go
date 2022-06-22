@@ -31,4 +31,6 @@ func (serverConnectionHandler) VerifyServer(_ context.Context, req *serverConnec
 	return res, nil
 }
 
-// DataUpdate(context.Context, *ServerInfoUpdate) (*DataUpdateRes, error)
+func (serverConnectionHandler) DataUpdate(_ context.Context, req *serverConnectionService.ServerInfoUpdate) (*serverConnectionService.DataUpdateRes, error) {
+	return nil, nil
+}
