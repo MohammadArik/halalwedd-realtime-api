@@ -1,0 +1,33 @@
+syntax="proto3";
+
+package halalwedd_managing_server;
+
+option go_package = "/newServerHandling";
+
+enum SERVER_TYPE {
+    REALTIME = 0;
+    INTERACTION = 1;
+    DATA = 2;
+}
+
+message ServerInfo {
+    SERVER_TYPE Type = 1;
+    string Public_IP = 2;
+    string Private_IP = 3;
+}
+
+message StoredServerData {
+    int32 InternalID = 1;
+    string Public_IP = 2;
+    string Private_IP = 3;
+}
+
+message ServerInfoResponse {
+    string Message = 1;
+    int32 InternalID = 2;
+    repeated StoredServerData ServerData = 3;
+}
+
+service NewServerHandling {
+    rpc publishServer(ServerInfo) returns (ServerInfoResponse);
+}

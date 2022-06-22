@@ -1,0 +1,50 @@
+syntax="proto3";
+
+package halalwedd_managing_server;
+
+
+option go_package = "/serverConnection";
+
+message CheckReq {
+    string Ping = 1;
+}
+
+message AuthReq {
+    string Challenge = 1;
+}
+
+message CheckRes {
+    string Pong = 1;
+}
+
+message AuthRes {
+    string Result = 1;
+}
+
+message StoredServerData {
+    int32 InternalID = 1;
+    string Public_IP = 2;
+    string Private_IP = 3;
+}
+
+enum CHANGE_TYPE {
+    New = 0;
+    Change = 1;
+    Remove = 2;
+}
+
+message ServerInfoResponse {
+    CHANGE_TYPE Type = 1;
+    int32 ChangedServerID = 2;
+    repeated StoredServerData ServerData = 3;
+}
+
+message DataUpdateRes {
+    string Message = 1;
+}
+
+service serverChecking {
+    rpc pingServer(CheckReq) returns (CheckRes);
+    rpc verifyServer(AuthReq) returns (AuthRes);
+    rpc dataUpdate(ServerInfoResponse) returns (DataUpdateRes);
+}

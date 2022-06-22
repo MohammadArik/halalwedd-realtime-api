@@ -11,7 +11,7 @@ import (
 var aesClass cipher.AEAD
 
 func main() {
-	// //* Log initial data
+	//* Log initial data
 	log.Println("Server Initialization Started")
 	log.Println("Server PID:", os.Getpid())
 	//* Load AES keys and initiate AES class
@@ -23,5 +23,9 @@ func main() {
 	panicOnErr(err)
 	aesClass, err = cipher.NewGCM(block)
 	panicOnErr(err)
+
+	//* Initialize the verification server
+
+	//* Calling the manager server to publish the server
 
 }
