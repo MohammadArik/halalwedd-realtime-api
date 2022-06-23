@@ -6,16 +6,11 @@ import (
 	"encoding/hex"
 	"log"
 	"os"
-
-	newServerHandling "github.com/MohammadArik/halalwedd/realtime-api/newServerHandling"
 )
 
 // ** Global variables
 // The struct for executing aes tasks
 var aesClass cipher.AEAD
-
-// The list of all peer realtime servers
-var peerServers *[]newServerHandling.StoredServerData
 
 func main() {
 	//* Log initial data
@@ -34,5 +29,11 @@ func main() {
 	//* Initialize the verification server
 
 	//* Calling the manager server to publish the server
+
+	// Initialize the Peer-Servers Manager
+
+	// Initializing Realtime API
+
+	// Starting Websocket Server
 
 }

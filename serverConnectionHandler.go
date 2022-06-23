@@ -32,5 +32,15 @@ func (serverConnectionHandler) VerifyServer(_ context.Context, req *serverConnec
 }
 
 func (serverConnectionHandler) DataUpdate(_ context.Context, req *serverConnectionService.ServerInfoUpdate) (*serverConnectionService.DataUpdateRes, error) {
-	return nil, nil
+	if req.Type == serverConnectionService.CHANGE_TYPE_New {
+		addNewServer(req)
+	} else if req.Type == serverConnectionService.CHANGE_TYPE_Change {
+		changeServer(req)
+	} else {
+		removeServer(req)
+	}
+	
+	return &serverConnectionService.DataUpdateRes{
+		Message: "Success",
+	}, nil
 }
