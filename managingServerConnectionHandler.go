@@ -7,18 +7,18 @@ import (
 	serverConnectionService "github.com/MohammadArik/halalwedd/realtime-api/serverConnection"
 )
 
-type serverConnectionHandler struct {
+type managingServerConnectionHandler struct {
 	serverConnectionService.UnimplementedServerCheckingServer
 }
 
-func (serverConnectionHandler) PingServer(context.Context, *serverConnectionService.CheckReq) (*serverConnectionService.CheckRes, error) {
+func (managingServerConnectionHandler) PingServer(context.Context, *serverConnectionService.CheckReq) (*serverConnectionService.CheckRes, error) {
 	res := &serverConnectionService.CheckRes{
 		Pong: "PONG",
 	}
 	return res, nil
 }
 
-func (serverConnectionHandler) VerifyServer(_ context.Context, req *serverConnectionService.AuthReq) (*serverConnectionService.AuthRes, error) {
+func (managingServerConnectionHandler) VerifyServer(_ context.Context, req *serverConnectionService.AuthReq) (*serverConnectionService.AuthRes, error) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println("Error recovered:", r)
@@ -31,7 +31,7 @@ func (serverConnectionHandler) VerifyServer(_ context.Context, req *serverConnec
 	return res, nil
 }
 
-func (serverConnectionHandler) DataUpdate(_ context.Context, req *serverConnectionService.ServerInfoUpdate) (*serverConnectionService.DataUpdateRes, error) {
+func (managingServerConnectionHandler) DataUpdate(_ context.Context, req *serverConnectionService.ServerInfoUpdate) (*serverConnectionService.DataUpdateRes, error) {
 	if req.Type == serverConnectionService.CHANGE_TYPE_New {
 		addNewServer(req)
 	} else if req.Type == serverConnectionService.CHANGE_TYPE_Change {
@@ -39,7 +39,7 @@ func (serverConnectionHandler) DataUpdate(_ context.Context, req *serverConnecti
 	} else {
 		removeServer(req)
 	}
-	
+
 	return &serverConnectionService.DataUpdateRes{
 		Message: "Success",
 	}, nil

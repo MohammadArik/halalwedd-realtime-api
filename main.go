@@ -30,10 +30,12 @@ func main() {
 
 	//* Calling the manager server to publish the server
 
-	// Initialize the Peer-Servers Manager
+	//* Initialize the Peer-Servers Manager
 
-	// Initializing Realtime API
+	//* Initializing Realtime API
 
-	// Starting Websocket Server
+	//* Starting Websocket Server
+
+	//* The main-thread blocking select to listen for errors
 
 }
