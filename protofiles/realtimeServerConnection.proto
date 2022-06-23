@@ -1,0 +1,25 @@
+syntax="proto3";
+
+package halalwedd_realtime_server;
+
+option go_package = "/peerServerConnection";
+
+enum TYPE {
+    Chat = 0;
+    Notifcation = 1;
+    Update = 2; 
+}
+
+message Message {
+    TYPE Type = 1;
+    string To = 2;
+    map<string, string> msgInfo = 3;
+}
+
+message CloseMessage {
+    string Message = 1;
+}
+
+service peerServerConnection {
+    rpc Connect(stream Message) returns (CloseMessage);
+}
