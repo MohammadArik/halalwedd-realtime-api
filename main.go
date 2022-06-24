@@ -56,8 +56,8 @@ func main() {
 
 	//* The main-thread blocking select to listen for errors
 	select {
-		case verError := <- verificationServerErrorChan:
-			log.Println("Verification server error:", verError)
+	case verError := <-verificationServerErrorChan:
+		log.Println("Verification server error:", verError)
 
 	}
 
