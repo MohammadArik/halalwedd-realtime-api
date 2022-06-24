@@ -2,7 +2,7 @@ syntax="proto3";
 
 package halalwedd_managing_server;
 
-option go_package = "/newServerHandling";
+option go_package = "/serverHandling";
 
 enum SERVER_TYPE {
     REALTIME = 0;
@@ -28,6 +28,6 @@ message ServerInfoResponse {
     repeated StoredServerData ServerData = 3;
 }
 
-service NewServerHandling {
+service ServerHandling {
     rpc publishServer(ServerInfo) returns (ServerInfoResponse);
 }

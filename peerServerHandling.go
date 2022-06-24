@@ -1,14 +1,14 @@
 package main
 
 import (
-	newServerHandlingService "github.com/MohammadArik/halalwedd/realtime-api/newServerHandling"
 	serverConnectionService "github.com/MohammadArik/halalwedd/realtime-api/serverConnection"
+	serverHandlingService "github.com/MohammadArik/halalwedd/realtime-api/serverHandling"
 )
 
 //! Structure plan
 
 // The list of all peer realtime servers
-var peerServers *[]newServerHandlingService.StoredServerData
+var peerServers *[]serverHandlingService.StoredServerData
 
 // The function to add new servers and execute necessary steps for that
 func addNewServer(updateInfo *serverConnectionService.ServerInfoUpdate) {

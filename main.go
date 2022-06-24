@@ -1,20 +1,29 @@
 package main
 
 import (
+	"context"
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/hex"
+	"encoding/json"
 	"log"
 	"net"
 	"os"
 
 	serverConnectionService "github.com/MohammadArik/halalwedd/realtime-api/serverConnection"
+	serverHandlingService "github.com/MohammadArik/halalwedd/realtime-api/serverHandling"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 // ** Global variables
 // The struct for executing aes tasks
 var aesClass cipher.AEAD
+
+// Server credentials
+var internalID int
+var publicIP string
+var privateIP string
 
 func main() {
 	//* Log initial data
@@ -46,7 +55,29 @@ func main() {
 		verificationServerErrorChan <- verificationServer.Serve(verificationServerListener)
 	}()
 
+	//* Gather the instances Public and Private IP address and IP address of managing server
+	// 1. Get the home directory
+	homeDir, err := os.UserHomeDir()
+	panicOnErr(err)
+	// 2. Get the ip info file
+	addressFile, err := os.ReadFile(homeDir + "/ip_info.json")
+	panicOnErr(err)
+	// 3. Extract the data
+	addressFileData := map[string]string{}
+	err = json.Unmarshal(addressFile, &addressFileData)
+	panicOnErr(err)
+	publicIP = addressFileData["publicAddress"]
+	privateIP = addressFileData["privateAddress"]
+
 	//* Calling the manager server to publish the server
+	// 1. Connect to the managing server
+	conn, err := grpc.Dial(addressFileData["managingServerAdress"]+":6491", grpc.WithTransportCredentials(insecure.NewCredentials()))
+
+	managingServerClient := serverHandlingService.NewServerHandlingClient(conn)
+
+	res, err := managingServerClient.PublishServer(context.Background(), &serverHandlingService.ServerInfo{
+		Type: serverHandlingService.SERVER_TYPE_REALTIME,
+	})
 
 	//* Initialize the Peer-Servers Manager
 
