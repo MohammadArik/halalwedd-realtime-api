@@ -5,7 +5,11 @@ import (
 	"crypto/cipher"
 	"encoding/hex"
 	"log"
+	"net"
 	"os"
+
+	serverConnectionService "github.com/MohammadArik/halalwedd/realtime-api/serverConnection"
+	"google.golang.org/grpc"
 )
 
 // ** Global variables
@@ -27,6 +31,20 @@ func main() {
 	panicOnErr(err)
 
 	//* Initialize the verification server
+	// 1. Initializing the connection for the server
+	verificationServerListener, err := net.Listen("tcp", ":3500")
+	// 2. Initialize the server-handler
+	verificationServerHandler := &managingServerConnectionHandler{}
+	// 3. Registering the server
+	verificationServerOpts := []grpc.ServerOption{}
+	verificationServer := grpc.NewServer(verificationServerOpts...)
+
+	serverConnectionService.RegisterServerCheckingServer(verificationServer, verificationServerHandler)
+	// 4. Starting the server to listen
+	verificationServerErrorChan := make(chan error)
+	go func() {
+		verificationServerErrorChan <- verificationServer.Serve(verificationServerListener)
+	}()
 
 	//* Calling the manager server to publish the server
 
@@ -37,5 +55,10 @@ func main() {
 	//* Starting Websocket Server
 
 	//* The main-thread blocking select to listen for errors
+	select {
+		case verError := <- verificationServerErrorChan:
+			log.Println("Verification server error:", verError)
+
+	}
 
 }
