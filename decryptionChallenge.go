@@ -1,7 +1,10 @@
 package main
 
+import "encoding/hex"
+
 func decryptCipher(challengeText string) string {
-	var cipher = []byte(challengeText)
+	var cipher, err = hex.DecodeString(challengeText)
+	panicOnErr(err)
 	var iv = []byte{}
 	var ciphertext []byte
 
