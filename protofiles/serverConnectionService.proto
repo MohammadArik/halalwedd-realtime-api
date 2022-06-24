@@ -21,7 +21,7 @@ message AuthRes {
     string Result = 1;
 }
 
-message StoredServerData {
+message ServerData {
     int32 InternalID = 1;
     string Public_IP = 2;
     string Private_IP = 3;
@@ -36,7 +36,7 @@ enum CHANGE_TYPE {
 message ServerInfoUpdate {
     CHANGE_TYPE Type = 1;
     int32 ChangedServerID = 2;
-    StoredServerData ServerData = 3;
+    ServerData ServerData = 3;
 }
 
 message DataUpdateRes {
