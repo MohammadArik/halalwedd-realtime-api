@@ -54,6 +54,7 @@ func main() {
 	go func() {
 		verificationServerErrorChan <- verificationServer.Serve(verificationServerListener)
 	}()
+	log.Println("Verification Server Started")
 
 	//* Gather the instances Public and Private IP address and IP address of managing server
 	// 1. Get the home directory
@@ -71,13 +72,22 @@ func main() {
 
 	//* Calling the manager server to publish the server
 	// 1. Connect to the managing server
+	log.Println("Connecting to Managing Server...")
 	conn, err := grpc.Dial(addressFileData["managingServerAdress"]+":6491", grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	managingServerClient := serverHandlingService.NewServerHandlingClient(conn)
-
+	// 2. Make the request
 	res, err := managingServerClient.PublishServer(context.Background(), &serverHandlingService.ServerInfo{
-		Type: serverHandlingService.SERVER_TYPE_REALTIME,
+		Type:       serverHandlingService.SERVER_TYPE_REALTIME,
+		Public_IP:  publicIP,
+		Private_IP: privateIP,
 	})
+	panicOnErr(err)
+	log.Println("Server published to managing-server!")
+	log.Println("Response Message:", res.Message)
+	log.Println("Internal ID:", res.InternalID)
+	log.Println("Server Data:", res.ServerData)
+	internalID = int(res.InternalID)
 
 	//* Initialize the Peer-Servers Manager
 
