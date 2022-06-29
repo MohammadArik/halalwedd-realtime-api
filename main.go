@@ -40,18 +40,18 @@ func main() {
 
 	//* Initialize the verification server
 	// 1. Initializing the connection for the server
-	verificationServerListener, err := net.Listen("tcp", ":3500")
+	edgeServerConnectivityAPI_listener, err := net.Listen("tcp", ":3500")
 	// 2. Initialize the server-handler
-	verificationServerHandler := &managingServerConnectionHandler{}
+	edgeServerConnectivityAPI_handler := &handler_edgeServerConnectivityAPI{}
 	// 3. Registering the server
-	verificationServerOpts := []grpc.ServerOption{}
-	verificationServer := grpc.NewServer(verificationServerOpts...)
+	edgeServerConnectivityAPI_opts := []grpc.ServerOption{}
+	edgeServerConnectivityAPI := grpc.NewServer(edgeServerConnectivityAPI_opts...)
 
-	serverManagingService.RegisterEdgeServerConnectionServiceServer(verificationServer, verificationServerHandler)
+	serverManagingService.RegisterEdgeServerConnectivityServer(edgeServerConnectivityAPI, edgeServerConnectivityAPI_handler)
 	// 4. Starting the server to listen
-	verificationServerErrorChan := make(chan error)
+	edgeServerConnectivityAPI_ErrorChan := make(chan error)
 	go func() {
-		verificationServerErrorChan <- verificationServer.Serve(verificationServerListener)
+		edgeServerConnectivityAPI_ErrorChan <- edgeServerConnectivityAPI.Serve(edgeServerConnectivityAPI_listener)
 	}()
 	log.Println("Verification Server Started")
 
@@ -72,11 +72,11 @@ func main() {
 	//* Calling the manager server to publish the server
 	// 1. Connect to the managing server
 	log.Println("Connecting to Managing Server...")
-	conn, err := grpc.Dial(addressFileData["managingServerAdress"]+":6491", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	serverHandlingAPI_conn, err := grpc.Dial(addressFileData["managingServerAdress"]+":6491", grpc.WithTransportCredentials(insecure.NewCredentials()))
 
-	managingServerClient := serverManagingService.NewServerHandlingClient(conn)
+	serverHandlingAPI_client := serverManagingService.NewServerHandlingClient(serverHandlingAPI_conn)
 	// 2. Make the request
-	res, err := managingServerClient.PublishServer(context.Background(), &serverManagingService.PublishServerReq{
+	res, err := serverHandlingAPI_client.PublishServer(context.Background(), &serverManagingService.PublishServerReq{
 		Type:       serverManagingService.SERVER_TYPE_REALTIME,
 		Public_IP:  publicIP,
 		Private_IP: privateIP,
@@ -96,9 +96,8 @@ func main() {
 
 	//* The main-thread blocking select to listen for errors
 	select {
-	case verError := <-verificationServerErrorChan:
-		log.Println("Verification server error:", verError)
-
+	case edgeServerConnectivityAPI_error := <-edgeServerConnectivityAPI_ErrorChan:
+		log.Println("Verification server error:", edgeServerConnectivityAPI_error.Error())
 	}
 
 }
