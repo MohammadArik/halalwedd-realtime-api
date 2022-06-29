@@ -1,0 +1,103 @@
+syntax="proto3";
+
+package halalwedd;
+
+option go_package = "/serverManaging";
+
+
+/*----- Common proto objects among the two service -----*/
+
+// The general proto message for handling server data(to be used in an array while storing/transaction)
+message ServerData {
+    int32 InternalID = 1;
+    string Public_IP = 2;
+    string Private_IP = 3;
+}
+
+/*----- The Server Handling Service -----*/
+
+/* The PublishServer RPC reltaed proto objects */
+
+// The server-type enum
+enum SERVER_TYPE {
+    REALTIME = 0;
+    INTERACTION = 1;
+    DATA = 2;
+}
+
+// The PublishServer RPC's request message
+message PublishServerReq {
+    SERVER_TYPE Type = 1;
+    string Public_IP = 2;
+    string Private_IP = 3;
+}
+
+// The PublishServer RPC's response message
+message PublishServerRes {
+    string Message = 1;
+    int32 InternalID = 2;
+    repeated ServerData ServerData = 3;
+}
+
+// The gRPC service definition of "Server Handling Service" which stores and verifies servers' data 
+//  and makes their data available to each other for them to inter-communicate.
+// Server: Managing-Server | Client: Data/Interaction/Realtime API servers
+service ServerHandling {
+    rpc publishServer(PublishServerReq) returns (PublishServerRes);
+}
+
+
+/*----- The Edge-Server Connection Service -----*/ 
+
+/* PingServer RPC related proto objects */
+
+// PingServer RPC's Request Message
+message PingReq {
+    string Ping = 1;
+}
+// PingServer RPC's Response Message
+message PingRes {
+    string Pong = 1;
+}
+
+
+/* VerifyServer RPC related proto objects */
+
+// Verify RPC's Request Message
+message VerifyReq {
+    string Challenge = 1;
+}
+// Verify RPC's Response Message
+message VerifyRes {
+    string Result = 1;
+}
+
+
+/* DataUpdate(server data) RPC related proto objects */
+
+// Update type enum
+enum UPDATE_TYPE {
+    New = 0;
+    Change = 1;
+    Remove = 2;
+}
+
+// DataUpdate RPC's Request Message
+message DataUpdateReq {
+    UPDATE_TYPE Type = 1;
+    int32 ChangedServerID = 2;
+    ServerData ServerData = 3;
+}
+// DataUpdate RPC's Response Message
+message DataUpdateRes {
+    string Message = 1;
+}
+
+// The gRPC service of "EdgeServerConnectionService" which is used to check/verify/update the servers
+//  while and after publishing. It also used to receive updates about peer servers.
+// Server: Data/Interaction/Realtime API servers | Client: Managing-Server
+service EdgeServerConnectionService {
+    rpc pingServer(PingReq) returns (PingRes);
+    rpc verifyServer(VerifyReq) returns (VerifyRes);
+    rpc dataUpdate(DataUpdateReq) returns (DataUpdateRes);
+}
