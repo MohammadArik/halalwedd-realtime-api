@@ -47,7 +47,7 @@ service ServerHandling {
 }
 
 
-/*----- The Edge-Server Connection Service -----*/ 
+/*----- The Edge-Server Connectivity Service -----*/ 
 
 /* PingServer RPC related proto objects */
 
@@ -93,10 +93,10 @@ message DataUpdateRes {
     string Message = 1;
 }
 
-// The gRPC service of "EdgeServerConnectionService" which is used to check/verify/update the servers
+// The gRPC service of "Edge Server Connectivity Service" which is used to check/verify/update the servers
 //  while and after publishing. It also used to receive updates about peer servers.
 // Server: Data/Interaction/Realtime API servers | Client: Managing-Server
-service EdgeServerConnection {
+service EdgeServerConnectivity {
     rpc pingServer(PingReq) returns (PingRes);
     rpc verifyServer(VerifyReq) returns (VerifyRes);
     rpc dataUpdate(DataUpdateReq) returns (DataUpdateRes);
