@@ -4,43 +4,43 @@ import (
 	"context"
 	"log"
 
-	serverConnectionService "github.com/MohammadArik/halalwedd/realtime-api/serverConnection"
+	serverManagingService "github.com/MohammadArik/halalwedd/realtime-api/serverManaging"
 )
 
 type managingServerConnectionHandler struct {
-	serverConnectionService.UnimplementedServerCheckingServer
+	serverManagingService.UnimplementedEdgeServerConnectionServiceServer
 }
 
-func (managingServerConnectionHandler) PingServer(context.Context, *serverConnectionService.CheckReq) (*serverConnectionService.CheckRes, error) {
-	res := &serverConnectionService.CheckRes{
+func (managingServerConnectionHandler) PingServer(context.Context, *serverManagingService.PingReq) (*serverManagingService.PingRes, error) {
+	res := &serverManagingService.PingRes{
 		Pong: "PONG",
 	}
 	return res, nil
 }
 
-func (managingServerConnectionHandler) VerifyServer(_ context.Context, req *serverConnectionService.AuthReq) (*serverConnectionService.AuthRes, error) {
+func (managingServerConnectionHandler) VerifyServer(_ context.Context, req *serverManagingService.VerifyReq) (*serverManagingService.VerifyRes, error) {
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println("Error recovered:", r)
 		}
 	}()
 
-	res := &serverConnectionService.AuthRes{
+	res := &serverManagingService.VerifyRes{
 		Result: decryptCipher(req.Challenge),
 	}
 	return res, nil
 }
 
-func (managingServerConnectionHandler) DataUpdate(_ context.Context, req *serverConnectionService.ServerInfoUpdate) (*serverConnectionService.DataUpdateRes, error) {
-	if req.Type == serverConnectionService.CHANGE_TYPE_New {
+func (managingServerConnectionHandler) DataUpdate(_ context.Context, req *serverManagingService.DataUpdateReq) (*serverManagingService.DataUpdateRes, error) {
+	if req.Type == serverManagingService.UPDATE_TYPE_New {
 		addNewServer(req)
-	} else if req.Type == serverConnectionService.CHANGE_TYPE_Change {
+	} else if req.Type == serverManagingService.UPDATE_TYPE_Change {
 		changeServer(req)
 	} else {
 		removeServer(req)
 	}
 
-	return &serverConnectionService.DataUpdateRes{
+	return &serverManagingService.DataUpdateRes{
 		Message: "Success",
 	}, nil
 }
