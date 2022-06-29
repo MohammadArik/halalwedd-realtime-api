@@ -10,8 +10,7 @@ import (
 	"net"
 	"os"
 
-	serverConnectionService "github.com/MohammadArik/halalwedd/realtime-api/serverConnection"
-	serverHandlingService "github.com/MohammadArik/halalwedd/realtime-api/serverHandling"
+	serverManagingService "github.com/MohammadArik/halalwedd/realtime-api/serverManaging"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -48,7 +47,7 @@ func main() {
 	verificationServerOpts := []grpc.ServerOption{}
 	verificationServer := grpc.NewServer(verificationServerOpts...)
 
-	serverConnectionService.RegisterServerCheckingServer(verificationServer, verificationServerHandler)
+	serverManagingService.RegisterEdgeServerConnectionServiceServer(verificationServer, verificationServerHandler)
 	// 4. Starting the server to listen
 	verificationServerErrorChan := make(chan error)
 	go func() {
@@ -75,10 +74,10 @@ func main() {
 	log.Println("Connecting to Managing Server...")
 	conn, err := grpc.Dial(addressFileData["managingServerAdress"]+":6491", grpc.WithTransportCredentials(insecure.NewCredentials()))
 
-	managingServerClient := serverHandlingService.NewServerHandlingClient(conn)
+	managingServerClient := serverManagingService.NewServerHandlingClient(conn)
 	// 2. Make the request
-	res, err := managingServerClient.PublishServer(context.Background(), &serverHandlingService.ServerInfo{
-		Type:       serverHandlingService.SERVER_TYPE_REALTIME,
+	res, err := managingServerClient.PublishServer(context.Background(), &serverManagingService.PublishServerReq{
+		Type:       serverManagingService.SERVER_TYPE_REALTIME,
 		Public_IP:  publicIP,
 		Private_IP: privateIP,
 	})
