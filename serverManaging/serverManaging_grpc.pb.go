@@ -100,159 +100,159 @@ var ServerHandling_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "protofiles/serverManaging.proto",
 }
 
-// EdgeServerConnectionServiceClient is the client API for EdgeServerConnectionService service.
+// EdgeServerConnectivityClient is the client API for EdgeServerConnectivity service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type EdgeServerConnectionServiceClient interface {
+type EdgeServerConnectivityClient interface {
 	PingServer(ctx context.Context, in *PingReq, opts ...grpc.CallOption) (*PingRes, error)
 	VerifyServer(ctx context.Context, in *VerifyReq, opts ...grpc.CallOption) (*VerifyRes, error)
 	DataUpdate(ctx context.Context, in *DataUpdateReq, opts ...grpc.CallOption) (*DataUpdateRes, error)
 }
 
-type edgeServerConnectionServiceClient struct {
+type edgeServerConnectivityClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewEdgeServerConnectionServiceClient(cc grpc.ClientConnInterface) EdgeServerConnectionServiceClient {
-	return &edgeServerConnectionServiceClient{cc}
+func NewEdgeServerConnectivityClient(cc grpc.ClientConnInterface) EdgeServerConnectivityClient {
+	return &edgeServerConnectivityClient{cc}
 }
 
-func (c *edgeServerConnectionServiceClient) PingServer(ctx context.Context, in *PingReq, opts ...grpc.CallOption) (*PingRes, error) {
+func (c *edgeServerConnectivityClient) PingServer(ctx context.Context, in *PingReq, opts ...grpc.CallOption) (*PingRes, error) {
 	out := new(PingRes)
-	err := c.cc.Invoke(ctx, "/halalwedd.EdgeServerConnectionService/pingServer", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/halalwedd.EdgeServerConnectivity/pingServer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *edgeServerConnectionServiceClient) VerifyServer(ctx context.Context, in *VerifyReq, opts ...grpc.CallOption) (*VerifyRes, error) {
+func (c *edgeServerConnectivityClient) VerifyServer(ctx context.Context, in *VerifyReq, opts ...grpc.CallOption) (*VerifyRes, error) {
 	out := new(VerifyRes)
-	err := c.cc.Invoke(ctx, "/halalwedd.EdgeServerConnectionService/verifyServer", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/halalwedd.EdgeServerConnectivity/verifyServer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *edgeServerConnectionServiceClient) DataUpdate(ctx context.Context, in *DataUpdateReq, opts ...grpc.CallOption) (*DataUpdateRes, error) {
+func (c *edgeServerConnectivityClient) DataUpdate(ctx context.Context, in *DataUpdateReq, opts ...grpc.CallOption) (*DataUpdateRes, error) {
 	out := new(DataUpdateRes)
-	err := c.cc.Invoke(ctx, "/halalwedd.EdgeServerConnectionService/dataUpdate", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/halalwedd.EdgeServerConnectivity/dataUpdate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// EdgeServerConnectionServiceServer is the server API for EdgeServerConnectionService service.
-// All implementations must embed UnimplementedEdgeServerConnectionServiceServer
+// EdgeServerConnectivityServer is the server API for EdgeServerConnectivity service.
+// All implementations must embed UnimplementedEdgeServerConnectivityServer
 // for forward compatibility
-type EdgeServerConnectionServiceServer interface {
+type EdgeServerConnectivityServer interface {
 	PingServer(context.Context, *PingReq) (*PingRes, error)
 	VerifyServer(context.Context, *VerifyReq) (*VerifyRes, error)
 	DataUpdate(context.Context, *DataUpdateReq) (*DataUpdateRes, error)
-	mustEmbedUnimplementedEdgeServerConnectionServiceServer()
+	mustEmbedUnimplementedEdgeServerConnectivityServer()
 }
 
-// UnimplementedEdgeServerConnectionServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedEdgeServerConnectionServiceServer struct {
+// UnimplementedEdgeServerConnectivityServer must be embedded to have forward compatible implementations.
+type UnimplementedEdgeServerConnectivityServer struct {
 }
 
-func (UnimplementedEdgeServerConnectionServiceServer) PingServer(context.Context, *PingReq) (*PingRes, error) {
+func (UnimplementedEdgeServerConnectivityServer) PingServer(context.Context, *PingReq) (*PingRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PingServer not implemented")
 }
-func (UnimplementedEdgeServerConnectionServiceServer) VerifyServer(context.Context, *VerifyReq) (*VerifyRes, error) {
+func (UnimplementedEdgeServerConnectivityServer) VerifyServer(context.Context, *VerifyReq) (*VerifyRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyServer not implemented")
 }
-func (UnimplementedEdgeServerConnectionServiceServer) DataUpdate(context.Context, *DataUpdateReq) (*DataUpdateRes, error) {
+func (UnimplementedEdgeServerConnectivityServer) DataUpdate(context.Context, *DataUpdateReq) (*DataUpdateRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DataUpdate not implemented")
 }
-func (UnimplementedEdgeServerConnectionServiceServer) mustEmbedUnimplementedEdgeServerConnectionServiceServer() {
+func (UnimplementedEdgeServerConnectivityServer) mustEmbedUnimplementedEdgeServerConnectivityServer() {
 }
 
-// UnsafeEdgeServerConnectionServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to EdgeServerConnectionServiceServer will
+// UnsafeEdgeServerConnectivityServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to EdgeServerConnectivityServer will
 // result in compilation errors.
-type UnsafeEdgeServerConnectionServiceServer interface {
-	mustEmbedUnimplementedEdgeServerConnectionServiceServer()
+type UnsafeEdgeServerConnectivityServer interface {
+	mustEmbedUnimplementedEdgeServerConnectivityServer()
 }
 
-func RegisterEdgeServerConnectionServiceServer(s grpc.ServiceRegistrar, srv EdgeServerConnectionServiceServer) {
-	s.RegisterService(&EdgeServerConnectionService_ServiceDesc, srv)
+func RegisterEdgeServerConnectivityServer(s grpc.ServiceRegistrar, srv EdgeServerConnectivityServer) {
+	s.RegisterService(&EdgeServerConnectivity_ServiceDesc, srv)
 }
 
-func _EdgeServerConnectionService_PingServer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _EdgeServerConnectivity_PingServer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PingReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EdgeServerConnectionServiceServer).PingServer(ctx, in)
+		return srv.(EdgeServerConnectivityServer).PingServer(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/halalwedd.EdgeServerConnectionService/pingServer",
+		FullMethod: "/halalwedd.EdgeServerConnectivity/pingServer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EdgeServerConnectionServiceServer).PingServer(ctx, req.(*PingReq))
+		return srv.(EdgeServerConnectivityServer).PingServer(ctx, req.(*PingReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _EdgeServerConnectionService_VerifyServer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _EdgeServerConnectivity_VerifyServer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(VerifyReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EdgeServerConnectionServiceServer).VerifyServer(ctx, in)
+		return srv.(EdgeServerConnectivityServer).VerifyServer(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/halalwedd.EdgeServerConnectionService/verifyServer",
+		FullMethod: "/halalwedd.EdgeServerConnectivity/verifyServer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EdgeServerConnectionServiceServer).VerifyServer(ctx, req.(*VerifyReq))
+		return srv.(EdgeServerConnectivityServer).VerifyServer(ctx, req.(*VerifyReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _EdgeServerConnectionService_DataUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _EdgeServerConnectivity_DataUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DataUpdateReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EdgeServerConnectionServiceServer).DataUpdate(ctx, in)
+		return srv.(EdgeServerConnectivityServer).DataUpdate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/halalwedd.EdgeServerConnectionService/dataUpdate",
+		FullMethod: "/halalwedd.EdgeServerConnectivity/dataUpdate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EdgeServerConnectionServiceServer).DataUpdate(ctx, req.(*DataUpdateReq))
+		return srv.(EdgeServerConnectivityServer).DataUpdate(ctx, req.(*DataUpdateReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// EdgeServerConnectionService_ServiceDesc is the grpc.ServiceDesc for EdgeServerConnectionService service.
+// EdgeServerConnectivity_ServiceDesc is the grpc.ServiceDesc for EdgeServerConnectivity service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var EdgeServerConnectionService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "halalwedd.EdgeServerConnectionService",
-	HandlerType: (*EdgeServerConnectionServiceServer)(nil),
+var EdgeServerConnectivity_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "halalwedd.EdgeServerConnectivity",
+	HandlerType: (*EdgeServerConnectivityServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "pingServer",
-			Handler:    _EdgeServerConnectionService_PingServer_Handler,
+			Handler:    _EdgeServerConnectivity_PingServer_Handler,
 		},
 		{
 			MethodName: "verifyServer",
-			Handler:    _EdgeServerConnectionService_VerifyServer_Handler,
+			Handler:    _EdgeServerConnectivity_VerifyServer_Handler,
 		},
 		{
 			MethodName: "dataUpdate",
-			Handler:    _EdgeServerConnectionService_DataUpdate_Handler,
+			Handler:    _EdgeServerConnectivity_DataUpdate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
