@@ -5,7 +5,7 @@ package halalwedd;
 option go_package = "/serverManagingService";
 
 
-/*----- Common proto objects among the two service -----*/
+/*----- Common proto objects among the services and RPCs -----*/
 
 // The general proto message for handling server data(to be used in an array while storing/transaction)
 message ServerData {
@@ -39,13 +39,33 @@ message PublishServerRes {
     repeated ServerData ServerData = 3;
 }
 
+/* The NotifyExit RPC related proto objects */
+// Exit types enum
+enum EXIT_TYPE {
+    NORMAL = 0;
+    ERROR = 1;
+}
+
+// The NotifyExit RPC's request message
+message NotifyExitReq {
+    EXIT_TYPE Type = 1;
+    SERVER_TYPE SType = 2;
+    int32 InternalID = 3;
+    string PublicIP = 4;
+}
+
+// The NotifyExit RPC's response message
+message NotifyExitRes {
+    string Message = 1;
+}
+
 // The gRPC service definition of "Server Handling Service" which stores and verifies servers' data 
 //  and makes their data available to each other for them to inter-communicate.
 // Server: Managing-Server | Client: Data/Interaction/Realtime API servers
 service ServerHandling {
     rpc publishServer(PublishServerReq) returns (PublishServerRes);
+    rpc NotifyExit(NotifyExitReq) returns (NotifyExitRes);
 }
-
 
 /*----- The Edge-Server Connectivity Service -----*/ 
 
