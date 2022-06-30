@@ -10,7 +10,7 @@ import (
 	"net"
 	"os"
 
-	serverManagingService "github.com/MohammadArik/halalwedd/realtime-api/serverManaging"
+	serverManagingService "github.com/MohammadArik/halalwedd/realtime-api/serverManagingService"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

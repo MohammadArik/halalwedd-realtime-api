@@ -1,7 +1,7 @@
 package main
 
 import (
-	serverManagingService "github.com/MohammadArik/halalwedd/realtime-api/serverManaging"
+	serverManagingService "github.com/MohammadArik/halalwedd/realtime-api/serverManagingService"
 )
 
 //! Structure plan
