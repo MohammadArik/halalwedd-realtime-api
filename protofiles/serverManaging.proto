@@ -2,7 +2,7 @@ syntax="proto3";
 
 package halalwedd;
 
-option go_package = "/serverManaging";
+option go_package = "/serverManagingService";
 
 
 /*----- Common proto objects among the two service -----*/
