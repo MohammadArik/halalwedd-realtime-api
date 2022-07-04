@@ -1,0 +1,14 @@
+# Demo Systemd unit file for halalwedd-managing-api
+#! Not for use in production 
+[Unit]
+Description=Halalwedd Realtime API
+After=network.target
+
+[Service]
+User=mohammadarik
+WorkingDirectory=/home/mohammadarik/go/src/halalwedd-realtime-api
+ExecStart=/home/mohammadarik/go/src/halalwedd-realtime-api/main.bin
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
