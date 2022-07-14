@@ -23,6 +23,7 @@ var aesClass cipher.AEAD
 var internalID int
 var publicIP string
 var privateIP string
+var processID int
 
 func main() {
 	//* Log initial data
@@ -55,7 +56,7 @@ func main() {
 	}()
 	log.Println("Verification Server Started")
 
-	//* Gather the instances Public and Private IP address and IP address of managing server
+	//* Gather the instance's process ID, Public and Private IP address and IP address of managing server
 	// 1. Get the home directory
 	homeDir, err := os.UserHomeDir()
 	panicOnErr(err)
@@ -68,6 +69,7 @@ func main() {
 	panicOnErr(err)
 	publicIP = addressFileData["publicAddress"]
 	privateIP = addressFileData["privateAddress"]
+	processID = os.Getpid()
 
 	//* Calling the manager server to publish the server
 	// 1. Connect to the managing server
