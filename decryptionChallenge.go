@@ -1,6 +1,9 @@
 package main
 
-import "encoding/hex"
+import (
+	"encoding/hex"
+	"fmt"
+)
 
 func decryptCipher(challengeText string) string {
 	var cipher, err = hex.DecodeString(challengeText)
@@ -21,5 +24,5 @@ func decryptCipher(challengeText string) string {
 	plaintext, err := aesClass.Open(nil, iv, ciphertext, nil)
 	panicOnErr(err)
 
-	return string(plaintext)
+	return (string(plaintext) + "-" + fmt.Sprint(processID))
 }
