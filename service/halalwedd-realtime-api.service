@@ -3,6 +3,9 @@
 [Unit]
 Description=Halalwedd Realtime API
 After=network.target
+Requires=network.target
+# !!! Only in development environment
+Requires=halalwedd-managing-server.service
 
 [Service]
 User=mohammadarik
