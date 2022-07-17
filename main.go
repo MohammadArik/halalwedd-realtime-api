@@ -9,6 +9,8 @@ import (
 	"log"
 	"net"
 	"os"
+	"os/signal"
+	"syscall"
 
 	serverManagingService "github.com/MohammadArik/halalwedd/realtime-api/serverManagingService"
 	"google.golang.org/grpc"
@@ -96,10 +98,21 @@ func main() {
 
 	//* Starting Websocket Server
 
+	//* The listener for system interrupt or termination
+	sysInterruptChan := make(chan os.Signal)
+
+	//? In case of confusion,
+	//? syscall.SIGINT refers to interrupt(ctrl+C)
+	//? syscall.SIGTERM refers to termination(systemctl stop)
+	signal.Notify(sysInterruptChan, syscall.SIGINT, syscall.SIGTERM)
+
 	//* The main-thread blocking select to listen for errors
 	select {
 	case edgeServerConnectivityAPI_error := <-edgeServerConnectivityAPI_ErrorChan:
 		log.Println("Verification server error:", edgeServerConnectivityAPI_error.Error())
+
+	case sysInterrupt := <-sysInterruptChan:
+		log.Println("Closing server due to system interruption. Signal:", sysInterrupt)
 	}
 
 }
