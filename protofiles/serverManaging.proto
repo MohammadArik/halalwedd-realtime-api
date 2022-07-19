@@ -1,6 +1,6 @@
 syntax="proto3";
 
-package halalwedd;
+package serverManagingService;
 
 option go_package = "/serverManagingService";
 
@@ -20,9 +20,10 @@ message ServerData {
 
 // The server-type enum
 enum SERVER_TYPE {
-    REALTIME = 0;
-    INTERACTION = 1;
-    DATA = 2;
+    NOT_PROVIDED = 0;
+    REALTIME = 1;
+    INTERACTION = 2;
+    DATA = 3;
 }
 
 // The PublishServer RPC's request message
@@ -58,14 +59,14 @@ message NotifyExitReq {
 message NotifyExitRes {
     string Message = 1;
 }
-
 // The gRPC service definition of "Server Handling Service" which stores and verifies servers' data 
 //  and makes their data available to each other for them to inter-communicate.
 // Server: Managing-Server | Client: Data/Interaction/Realtime API servers
 service ServerHandling {
-    rpc publishServer(PublishServerReq) returns (PublishServerRes);
+    rpc PublishServer(PublishServerReq) returns (PublishServerRes);
     rpc NotifyExit(NotifyExitReq) returns (NotifyExitRes);
 }
+
 
 /*----- The Edge-Server Connectivity Service -----*/ 
 
@@ -117,7 +118,7 @@ message DataUpdateRes {
 //  while and after publishing. It also used to receive updates about peer servers.
 // Server: Data/Interaction/Realtime API servers | Client: Managing-Server
 service EdgeServerConnectivity {
-    rpc pingServer(PingReq) returns (PingRes);
-    rpc verifyServer(VerifyReq) returns (VerifyRes);
-    rpc dataUpdate(DataUpdateReq) returns (DataUpdateRes);
+    rpc PingServer(PingReq) returns (PingRes);
+    rpc VerifyServer(VerifyReq) returns (VerifyRes);
+    rpc DataUpdate(DataUpdateReq) returns (DataUpdateRes);
 }
