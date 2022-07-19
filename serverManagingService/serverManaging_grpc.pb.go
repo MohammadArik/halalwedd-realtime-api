@@ -32,7 +32,7 @@ func NewServerHandlingClient(cc grpc.ClientConnInterface) ServerHandlingClient {
 
 func (c *serverHandlingClient) PublishServer(ctx context.Context, in *PublishServerReq, opts ...grpc.CallOption) (*PublishServerRes, error) {
 	out := new(PublishServerRes)
-	err := c.cc.Invoke(ctx, "/halalwedd.ServerHandling/publishServer", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/serverManagingService.ServerHandling/PublishServer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (c *serverHandlingClient) PublishServer(ctx context.Context, in *PublishSer
 
 func (c *serverHandlingClient) NotifyExit(ctx context.Context, in *NotifyExitReq, opts ...grpc.CallOption) (*NotifyExitRes, error) {
 	out := new(NotifyExitRes)
-	err := c.cc.Invoke(ctx, "/halalwedd.ServerHandling/NotifyExit", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/serverManagingService.ServerHandling/NotifyExit", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func _ServerHandling_PublishServer_Handler(srv interface{}, ctx context.Context,
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/halalwedd.ServerHandling/publishServer",
+		FullMethod: "/serverManagingService.ServerHandling/PublishServer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServerHandlingServer).PublishServer(ctx, req.(*PublishServerReq))
@@ -108,7 +108,7 @@ func _ServerHandling_NotifyExit_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/halalwedd.ServerHandling/NotifyExit",
+		FullMethod: "/serverManagingService.ServerHandling/NotifyExit",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ServerHandlingServer).NotifyExit(ctx, req.(*NotifyExitReq))
@@ -120,11 +120,11 @@ func _ServerHandling_NotifyExit_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ServerHandling_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "halalwedd.ServerHandling",
+	ServiceName: "serverManagingService.ServerHandling",
 	HandlerType: (*ServerHandlingServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "publishServer",
+			MethodName: "PublishServer",
 			Handler:    _ServerHandling_PublishServer_Handler,
 		},
 		{
@@ -155,7 +155,7 @@ func NewEdgeServerConnectivityClient(cc grpc.ClientConnInterface) EdgeServerConn
 
 func (c *edgeServerConnectivityClient) PingServer(ctx context.Context, in *PingReq, opts ...grpc.CallOption) (*PingRes, error) {
 	out := new(PingRes)
-	err := c.cc.Invoke(ctx, "/halalwedd.EdgeServerConnectivity/pingServer", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/serverManagingService.EdgeServerConnectivity/PingServer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +164,7 @@ func (c *edgeServerConnectivityClient) PingServer(ctx context.Context, in *PingR
 
 func (c *edgeServerConnectivityClient) VerifyServer(ctx context.Context, in *VerifyReq, opts ...grpc.CallOption) (*VerifyRes, error) {
 	out := new(VerifyRes)
-	err := c.cc.Invoke(ctx, "/halalwedd.EdgeServerConnectivity/verifyServer", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/serverManagingService.EdgeServerConnectivity/VerifyServer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +173,7 @@ func (c *edgeServerConnectivityClient) VerifyServer(ctx context.Context, in *Ver
 
 func (c *edgeServerConnectivityClient) DataUpdate(ctx context.Context, in *DataUpdateReq, opts ...grpc.CallOption) (*DataUpdateRes, error) {
 	out := new(DataUpdateRes)
-	err := c.cc.Invoke(ctx, "/halalwedd.EdgeServerConnectivity/dataUpdate", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/serverManagingService.EdgeServerConnectivity/DataUpdate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -227,7 +227,7 @@ func _EdgeServerConnectivity_PingServer_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/halalwedd.EdgeServerConnectivity/pingServer",
+		FullMethod: "/serverManagingService.EdgeServerConnectivity/PingServer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EdgeServerConnectivityServer).PingServer(ctx, req.(*PingReq))
@@ -245,7 +245,7 @@ func _EdgeServerConnectivity_VerifyServer_Handler(srv interface{}, ctx context.C
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/halalwedd.EdgeServerConnectivity/verifyServer",
+		FullMethod: "/serverManagingService.EdgeServerConnectivity/VerifyServer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EdgeServerConnectivityServer).VerifyServer(ctx, req.(*VerifyReq))
@@ -263,7 +263,7 @@ func _EdgeServerConnectivity_DataUpdate_Handler(srv interface{}, ctx context.Con
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/halalwedd.EdgeServerConnectivity/dataUpdate",
+		FullMethod: "/serverManagingService.EdgeServerConnectivity/DataUpdate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EdgeServerConnectivityServer).DataUpdate(ctx, req.(*DataUpdateReq))
@@ -275,19 +275,19 @@ func _EdgeServerConnectivity_DataUpdate_Handler(srv interface{}, ctx context.Con
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var EdgeServerConnectivity_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "halalwedd.EdgeServerConnectivity",
+	ServiceName: "serverManagingService.EdgeServerConnectivity",
 	HandlerType: (*EdgeServerConnectivityServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "pingServer",
+			MethodName: "PingServer",
 			Handler:    _EdgeServerConnectivity_PingServer_Handler,
 		},
 		{
-			MethodName: "verifyServer",
+			MethodName: "VerifyServer",
 			Handler:    _EdgeServerConnectivity_VerifyServer_Handler,
 		},
 		{
-			MethodName: "dataUpdate",
+			MethodName: "DataUpdate",
 			Handler:    _EdgeServerConnectivity_DataUpdate_Handler,
 		},
 	},
