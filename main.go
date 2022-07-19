@@ -58,20 +58,14 @@ func main() {
 	}()
 	log.Println("Verification Server Started")
 
-	//* Check if the program is started as a root process
+	//* Parse managing-server IP from the ip_info.json file
 	// 1. Get the home directory
 	homeDir, err := os.UserHomeDir()
 	panicOnErr(err)
-	// 2. Check with the root's home directory and panic on exception
-	if homeDir != "/root" {
-		panic("Program not initialized with root permissions")
-	}
-
-	//* Gather the instance's process ID, Public and Private IP address and IP address of managing server
-	// 1. Get the ip info file
+	// 2. Get the ip info file
 	addressFile, err := os.ReadFile(homeDir + "/ip_info.json")
 	panicOnErr(err)
-	// 2. Extract the data
+	// 3. Extract the data
 	addressFileData := map[string]string{}
 	err = json.Unmarshal(addressFile, &addressFileData)
 	panicOnErr(err)
