@@ -11,7 +11,7 @@ Requires=halalwedd-managing-server.service
 User=mohammadarik
 WorkingDirectory=/home/mohammadarik/go/src/halalwedd-realtime-api
 ExecStart=/home/mohammadarik/go/src/halalwedd-realtime-api/main.bin
-Restart=always
+# Restart=always
 
 [Install]
 WantedBy=multi-user.target
