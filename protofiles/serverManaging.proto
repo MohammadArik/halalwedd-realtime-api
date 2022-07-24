@@ -37,7 +37,7 @@ message PublishServerReq {
 message PublishServerRes {
     string Message = 1;
     int32 InternalID = 2;
-    repeated ServerData ServerData = 3;
+    map<int32, ServerData> ServerData = 3;
 }
 
 /* The NotifyExit RPC related proto objects */
