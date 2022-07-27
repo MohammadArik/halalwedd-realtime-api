@@ -17,7 +17,7 @@ type AES struct {
 
 func InitiateAES(keyFilePath string) *AES {
 	//* Load AES keys and initiate AES Block
-	keyFileData, err := os.ReadFile("./keys/healthMonitoring.key")
+	keyFileData, err := os.ReadFile(keyFilePath)
 	utils.PanicOnErr(err)
 	key, err := hex.DecodeString(string(keyFileData))
 	utils.PanicOnErr(err)
