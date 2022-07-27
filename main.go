@@ -2,9 +2,6 @@ package main
 
 import (
 	"context"
-	"crypto/aes"
-	"crypto/cipher"
-	"encoding/hex"
 	"encoding/json"
 	"log"
 	"net"
@@ -12,6 +9,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/MohammadArik/halalwedd/realtime-api/aesEncryption"
 	serverManagingService "github.com/MohammadArik/halalwedd/realtime-api/serverManagingService"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -19,7 +17,7 @@ import (
 
 // ** Global variables
 // The struct for executing aes tasks
-var aesClass cipher.AEAD
+var aesHandler *aesEncryption.AES
 
 // Server credentials
 var internalID int
@@ -32,14 +30,7 @@ func main() {
 	log.Println("Server Initialization Started")
 	log.Println("Server PID:", os.Getpid())
 	//* Load AES keys and initiate AES class
-	keyFileData, err := os.ReadFile("./keys/key.dat")
-	panicOnErr(err)
-	key, err := hex.DecodeString(string(keyFileData))
-	panicOnErr(err)
-	block, err := aes.NewCipher(key)
-	panicOnErr(err)
-	aesClass, err = cipher.NewGCM(block)
-	panicOnErr(err)
+	aesHandler = aesEncryption.InitiateAES("./keys/serverManaging.key")
 
 	//* Initialize the verification server
 	// 1. Initializing the connection for the server

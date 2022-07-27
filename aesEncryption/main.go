@@ -62,14 +62,14 @@ func (class *AES) Encrypt(plaintext string) (result string) {
 func (class *AES) Decrypt(cipher string) (plainText string) {
 	cipherByte, err := hex.DecodeString(cipher)
 	utils.PanicOnErr(err)
-	var iv = []byte{}
+	var iv []byte
 	var ciphertext []byte
 
-	for i := 0; i < len(cipher); i++ {
+	for i := 0; i < len(cipherByte); i++ {
 		if i < 12 {
 			ciphertext = append(ciphertext, cipherByte[i])
 		} else if i >= 12 && i < 24 {
-			iv = append(iv, cipher[i])
+			iv = append(iv, cipherByte[i])
 		} else {
 			ciphertext = append(ciphertext, cipherByte[i])
 		}

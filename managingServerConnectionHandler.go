@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	serverManagingService "github.com/MohammadArik/halalwedd/realtime-api/serverManagingService"
@@ -25,8 +26,10 @@ func (handler_edgeServerConnectivityAPI) VerifyServer(_ context.Context, req *se
 		}
 	}()
 
+	plaintext := aesHandler.Decrypt(req.Challenge) + "-" + fmt.Sprint(processID)
+	log.Println(plaintext)
 	res := &serverManagingService.VerifyRes{
-		Result: decryptCipher(req.Challenge),
+		Result: plaintext,
 	}
 	return res, nil
 }
