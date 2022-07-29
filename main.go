@@ -61,7 +61,6 @@ func main() {
 	err = json.Unmarshal(addressFile, &addressFileData)
 	panicOnErr(err)
 	publicIP = addressFileData["publicAddress"]
-	privateIP = addressFileData["privateAddress"]
 	processID = os.Getpid()
 
 	//* Calling the manager server to publish the server
@@ -72,9 +71,8 @@ func main() {
 	serverHandlingAPI_client := serverManagingService.NewServerHandlingClient(serverHandlingAPI_conn)
 	// 2. Make the request
 	res, err := serverHandlingAPI_client.PublishServer(context.Background(), &serverManagingService.PublishServerReq{
-		Type:       serverManagingService.SERVER_TYPE_REALTIME,
-		Public_IP:  publicIP,
-		Private_IP: privateIP,
+		Type:      serverManagingService.SERVER_TYPE_REALTIME,
+		Public_IP: publicIP,
 	})
 	panicOnErr(err)
 	log.Println("Server published to managing-server!")
@@ -82,6 +80,7 @@ func main() {
 	log.Println("Internal ID:", res.InternalID)
 	log.Println("Server Data:", res.ServerData)
 	internalID = int(res.InternalID)
+	privateIP = res.ServerData[res.InternalID].Private_IP
 
 	//* Initialize the Peer-Servers Manager
 
@@ -100,9 +99,21 @@ func main() {
 	//* The main-thread blocking select to listen for errors
 	select {
 	case edgeServerConnectivityAPI_error := <-edgeServerConnectivityAPI_ErrorChan:
+		serverHandlingAPI_client.NotifyExit(context.Background(), &serverManagingService.NotifyExitReq{
+			Type:       serverManagingService.EXIT_TYPE_ERROR,
+			SType:      serverManagingService.SERVER_TYPE_REALTIME,
+			InternalID: res.InternalID,
+			PublicIP:   publicIP,
+		})
 		log.Println("Verification server error:", edgeServerConnectivityAPI_error.Error())
 
 	case sysInterrupt := <-sysInterruptChan:
+		serverHandlingAPI_client.NotifyExit(context.Background(), &serverManagingService.NotifyExitReq{
+			Type:       serverManagingService.EXIT_TYPE_ERROR,
+			SType:      serverManagingService.SERVER_TYPE_REALTIME,
+			InternalID: res.InternalID,
+			PublicIP:   publicIP,
+		})
 		log.Println("Closing server due to system interruption. Signal:", sysInterrupt)
 	}
 

@@ -30,7 +30,6 @@ enum SERVER_TYPE {
 message PublishServerReq {
     SERVER_TYPE Type = 1;
     string Public_IP = 2;
-    string Private_IP = 3;
 }
 
 // The PublishServer RPC's response message
